@@ -4,6 +4,7 @@
 storyboard = require( "storyboard" )
 scene = storyboard.newScene()
 physics = require "physics"
+block = require("block")
 physics.start()
 physics.setGravity(0, 9.8)
 data = require("data")
@@ -11,22 +12,36 @@ highscore = 0
 
 local world 
 local _W, _H = display.contentWidth, display.contentHeight
+local groundSettings = {density = 1, friction = 0.9, bounce = 0.2}
 local transitionOptions = {
 	effect = "slideRight",
 	time = 400
 }
+
+local function moveSquare( event )
+	block1:move()
+	block1:setColor()
+	block2:move()
+	block2:setColor()
+end
 
 
 --funtion to create scene game
 function scene:createScene( event )
    local sceneGroup = self.view
 
-   local bg = display.newRect(0, -45, 320, 570)
-   bg.anchorX, bg.anchorY = 0, 0
-   bg:setFillColor(170/255, 255/255, 255/255)
-   local ground = display.newRect(0, 450, 320, 100)
-   ground.anchorX, ground.anchorY = 0, 0
-   ground:setFillColor(20/255, 123/255, 255/255)
+   world = display.newGroup()
+
+   local sky = display.newRect(60, 240, 520, 570)
+   sky:setFillColor(170/255, 255/255, 255/255)
+   physics.addBody(sky, 'static')
+   world:insert(sky) 
+
+   local ground1 = display.newRect(_W/2.5, _H+25, _W+65, 100)
+   ground1:setFillColor(102/255, 204/255, 0/255)
+   physics.addBody(ground1, 'static', groundSettings)
+   world:insert(ground1)
+
    --x,y = display.contentCenterX, display.contentCenterY
    --background = display.newImageRect("bg.jpg" , display.viewableContentWidth + 50, display.viewableContentHeight + 100 )
    --background.x = x; background.y = y-45
@@ -46,7 +61,7 @@ end
 -- function call it after the scene game goes on screen
 function scene:enterScene( event )
    local sceneGroup = self.view
-    
+    	Runtime:addEventListener("tap", moveSquare)
 end
 
 -- function call it before the scene game goes off screen

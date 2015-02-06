@@ -11,8 +11,8 @@ storyboard.gotoScene( "game" )
 
 local Block = require("Block")
 
-local block1 = Block.new()
-local block2 = Block.new()
+block1 = Block.new()
+block2 = Block.new()
 
 block1:move()
 block1:setColor()
