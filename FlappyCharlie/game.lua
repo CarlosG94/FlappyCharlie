@@ -8,15 +8,18 @@ block = require("block")
 physics.start()
 physics.setGravity(0, 9.8)
 data = require("data")
+Hero = require "Hero"
 highscore = 0
 
-local world 
+local world, hero 
 local _W, _H = display.contentWidth, display.contentHeight
 local groundSettings = {density = 1, friction = 0.9, bounce = 0.2}
 local transitionOptions = {
 	effect = "slideRight",
 	time = 400
 }
+
+physics.setDrawMode("Hybrid")
 
 local function moveSquare( event )
 	block1:move()
@@ -32,23 +35,14 @@ function scene:createScene( event )
 
    world = display.newGroup()
 
-   local sky = display.newRect(60, 240, 520, 570)
-   sky:setFillColor(170/255, 255/255, 255/255)
-   physics.addBody(sky, 'static')
-   world:insert(sky) 
+   local hero = Hero.new(100, 100, physics)
+   world:insert(hero)
 
-   local ground1 = display.newRect(_W/2.5, _H+25, _W+65, 100)
-   ground1:setFillColor(102/255, 204/255, 0/255)
-   physics.addBody(ground1, 'static', groundSettings)
-   world:insert(ground1)
 
-   --x,y = display.contentCenterX, display.contentCenterY
-   --background = display.newImageRect("bg.jpg" , display.viewableContentWidth + 50, display.viewableContentHeight + 100 )
-   --background.x = x; background.y = y-45
-   --sceneGroup:insert(background)
-   local text = display.newText("Hello World in this bitch\n", 160, 50, nil, 26)
-   sceneGroup:insert(text)
+end
 
+local function step(event)
+   		--hero:step(event)
 end
 
 -- function call it before the scence goes on screen
@@ -61,12 +55,17 @@ end
 -- function call it after the scene game goes on screen
 function scene:enterScene( event )
    local sceneGroup = self.view
+
     	Runtime:addEventListener("tap", moveSquare)
+
+    	Runtime:addEventListener("enterFrame", step)
 end
 
 -- function call it before the scene game goes off screen
 function scene:exitScene( event )
         local sceneGroup = self.view
+
+        Runtime:removeEventListener("enterFrame", step)
 end
 
 -- function call it after the scene game goes off screen

@@ -7,7 +7,8 @@ data = require("data")
 
 data.score = 0
 local storyboard = require("storyboard")
-storyboard.gotoScene( "game" )
+storyboard.gotoScene( "start" )
+storyboard.gotoScene("game")
 
 local Block = require("Block")
 
