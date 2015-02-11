@@ -9,7 +9,9 @@ physics.start()
 
 local world
 local _W, _H = display.contentWidth, display.contentHeight
-local groundSettings = {density = 1, friction = 0.9, bounce = 0.2}
+local groundSettings = {density = 1, friction = 0.9, bounce = 0.1}
+
+physics.setDrawMode("Hybrid")
 
 -- function
 function game(event)
@@ -51,9 +53,7 @@ end
 function scene:exitScene( event )
         local sceneGroup = self.view
 
-        if event.phase == "ended" then
-        storyboard.gotoScene( "game" )
-     end
+
 end
 
 -- function call it after the scene game goes off screen
